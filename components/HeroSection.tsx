@@ -71,7 +71,7 @@ export function HeroSectionOne() {
 
           <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
             {/* Left box — Bio text */}
-            <div className="md:col-span-3 h-70 bg-neutral-100 dark:bg-neutral-800 flex rounded-lg p-6 shadow-sm items-start">
+            <div className="md:col-span-3 h-80 overflow-y-auto  bg-neutral-100 dark:bg-neutral-800 flex rounded-lg p-6 shadow-sm items-start">
               <p className="text-lg font-medium text-left leading-relaxed text-neutral-700 dark:text-neutral-200">
                 I'm a Software Engineer who loves transforming ideas into
                 reliable, scalable products. Over time, I've explored several
@@ -86,7 +86,7 @@ export function HeroSectionOne() {
             </div>
 
             {/* Right box — Profile image */}
-            <div className="md:col-span-1 h-70 bg-neutral-100 dark:bg-neutral-800 flex rounded-lg shadow-sm overflow-hidden relative">
+            <div className="md:col-span-1 h-80 bg-neutral-100 dark:bg-neutral-800 flex rounded-lg shadow-sm overflow-hidden relative">
               <Image
                 src="/image.png"
                 alt="Profile Photo"
