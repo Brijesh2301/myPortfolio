@@ -1,6 +1,7 @@
 "use client";
 import { cn } from "@/lib/utils";
 import { IconMenu2, IconX } from "@tabler/icons-react";
+import { FaLaptopCode } from "react-icons/fa";  
 import {
   motion,
   AnimatePresence,
@@ -236,7 +237,7 @@ export const NavbarLogo = () => {
       href="#"
       className="relative z-20 mr-4 flex items-center space-x-2 px-2 py-1 text-sm font-normal text-black"
     >
-   
+     <p className="font-medium text-black dark:text-white"><FaLaptopCode /></p>
       <span className="font-medium text-black dark:text-white">BK</span>
     </a>
   );
