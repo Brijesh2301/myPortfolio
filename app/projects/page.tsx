@@ -1,502 +1,588 @@
 "use client";
 
-import { motion, type Variants } from "framer-motion";
+import { motion } from "framer-motion";
 import { useState } from "react";
 
+// ─── Edit karo apna data yahan ───────────────────────────
+const resumeData = {
+  name: "Brijesh Kushwaha",
+  title: "Software Developer",
+  email: "brijeshkushwaha@email.com",
+  phone: "+91 7860032690",
+  location: "India",
+  github: "github.com/brijesh2301",
+  linkedin: "linkedin.com/in/brijesh-kushwaha",
+  summary:
+    "Passionate Full Stack Developer with 1+ year of experience building scalable web applications. Proficient in React, Next.js, Node.js, and MongoDB. Love crafting elegant solutions to complex problems.",
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
-  show: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.1, duration: 0.6, ease: "easeOut" },
-  }),
-} as any;
+  experience: [
+    {
+      id: 1,
+      role: "Full-Stack Developer",
+      company: "ITIO Invoex Private Ltd",
+      duration: "June 2026 – Present",
+      location: "Onsite",
+      points: [
+        " Developed multiple full-stack projects including a Payment System (MERN) and a Crypto Payment System with blockchain-based wallet integration and real-time transaction tracking.",
+        "Currently building an Employee Monitoring System with real-time activity tracking, productivity analytics, and role-based dashboards.",
+        "Developing an SEO Automation tool using Python, LangGraph, ChromaDB, and AI agents for automated keyword research, content optimization, and ranking analysis.",
+      ],
+    },
+    {
+      id: 2,
+      role: "Junior Frontend Developer",
+      company: "Alobha technologies Pvt Ltd",
+      duration: "March 2025 – May 2025",
+      location: "Remote",
+      points: [
+        "Led UI architecture for a SaaS dashboard serving 10k+ users",
+        "Reduced bundle size by 40% through code splitting and lazy loading",
+        "Mentored 3 junior developers and conducted code reviews",
+      ],
+    },
+    {
+      id: 3,
+      role: "Software Engineer",
+      company: "X-strategy LLP",
+      duration: "Sep 2025 – Feb 2026",
+      location: "India",
+      points: [
+        "Built MERN stack apps from scratch, owned backend and frontend",
+        "Implemented JWT authentication and role-based access control",
+        "Integrated Razorpay payment gateway for e-commerce platform",
+      ],
+    },
+    {
+      id: 4,
+      role: "Freelance Developer",
+      company: "Self-employed",
+      duration: "Jan 2021 – May 2022",
+      location: "Remote",
+      points: [
+        "Delivered 15+ client projects in React, Node.js and MongoDB",
+        "Built REST APIs consumed by mobile and web clients",
+        "Maintained 100% client satisfaction rate",
+      ],
+    },
+  ],
 
-const projects = [
-  {
-    id: 1,
-    title: "DevTinder WebApp",
-    description:
-      "Full-Stack Application with JWT user authentication,  Amazon AWS SES Email integration. Built with MERN stack.",
-    tags: ["React", "Node.js", "MongoDB", "Express","JWT","Tailwind" ],
-    github: "https://github.com/brijesh2301/devtinder",
-    live: "http://15.206.222.88/",
-    category: "Full Stack",
-    status: "Live",
-    featured: true,
-    gradient: "from-sky-500/10 to-blue-600/10",
-    border: "hover:border-sky-500/40",
-    accent: "text-sky-400",
-    badge: "bg-sky-500/10 text-sky-400 border-sky-500/20",
-  },
-  {
-    id: 2,
-    title: "Attendance System & Task Management",
-    description:
-      "Production-ready Express.js REST API with JWT auth, rate limiting, input validation Real-time Role Based attendance tracking system with admin dashboard and user management, Task Management , and task status , features like Check in and checkout, etc.",
-    tags: ["React.js", "TypeScript","Express.js", "Node.js"," MongoDB", "Tailwind", "JWT"],
-    github: "https://github.com/brijesh2301/attendance-system",
-    live: "http://13.58.165.237:3000",
-    category: "Full Stack",
-    status: "Live",
-    featured: true,
-    gradient: "from-violet-500/10 to-purple-600/10",
-    border: "hover:border-violet-500/40",
-    accent: "text-violet-400",
-    badge: "bg-violet-500/10 text-violet-400 border-violet-500/20",
-  },
-  {
-    id: 3,
-    title: "Compayny Wesbsite Kickass",
-    description:
-      "A Trello-inspired kanban board with drag-and-drop, real-time updates via WebSockets, and team collaboration features.",
-    tags: ["React", "Node.js", "Socket.io", "MongoDB"],
-    github: "https://github.com/",
-    live: "https://kickassdevelopers.com/",
-    category: "Full Stack",
-    status: "In Progress",
-    featured: true,
-    gradient: "from-green-500/10 to-emerald-600/10",
-    border: "hover:border-green-500/40",
-    accent: "text-green-400",
-    badge: "bg-green-500/10 text-green-400 border-green-500/20",
-  },
-  {
-    id: 4,
-    title: "Fenrir Task Dashboard",
-    description:
-      "This portfolio — built with Next.js 14, Tailwind CSS, Aceternity UI, and Framer Motion animations.",
-    tags: ["Next.js", "Tailwind", "Framer Motion", "TypeScript"],
-    github: "https://github.com/Brijesh2301/Task",
-    live: "https://task-44aq-git-main-brijesh2301s-projects.vercel.app/",
-    category: "Frontend",
-    status: "Live",
-    featured: false,
-    gradient: "from-orange-500/10 to-amber-600/10",
-    border: "hover:border-orange-500/40",
-    accent: "text-orange-400",
-    badge: "bg-orange-500/10 text-orange-400 border-orange-500/20",
-  },
-  {
-    id: 5,
-    title: "REST API Boilerplate",
-    description:
-      "Production-ready Express.js REST API with JWT auth, rate limiting, input validation, and Docker support.",
-    tags: ["Node.js", "Express", "MongoDB", "Docker", "JWT"],
-    github: "https://github.com/yourusername/project",
-    live: null,
-    category: "Backend",
-    status: "Live",
-    featured: false,
-    gradient: "from-rose-500/10 to-pink-600/10",
-    border: "hover:border-rose-500/40",
-    accent: "text-rose-400",
-    badge: "bg-rose-500/10 text-rose-400 border-rose-500/20",
-  },
-  {
-    id: 6,
-    title: "Weather Dashboard",
-    description:
-      "Beautiful weather dashboard with 7-day forecast, location search, and animated weather icons using OpenWeatherMap API.",
-    tags: ["React", "TypeScript", "OpenWeatherMap", "Tailwind"],
-    github: "https://github.com/yourusername/project",
-    live: "https://yourproject.vercel.app",
-    category: "Frontend",
-    status: "Live",
-    featured: false,
-    gradient: "from-cyan-500/10 to-teal-600/10",
-    border: "hover:border-cyan-500/40",
-    accent: "text-cyan-400",
-    badge: "bg-cyan-500/10 text-cyan-400 border-cyan-500/20",
-  },
-];
+  education: [
+    {
+      id: 1,
+      degree: "B.Tech Information Tecchnology",
+      institution: "University Name",
+      duration: "2019 – 2023",
+      grade: "74%",
+    },
+    {
+      id: 2,
+      degree: "12th Science (PCM)",
+      institution: "School Name",
+      duration: "2015 – 2017",
+      grade: "81%",
+    },
+  ],
 
-const categories = ["All", "Full Stack", "Frontend", "Backend", "AI / ML"];
+  skills: {
+    Frontend: [
+      "React",
+      "Next.js",
+      "TypeScript",
+      "Tailwind CSS",
+      "Framer Motion",
+    ],
+    Backend: ["Node.js", "Express.js", "MongoDB", "REST APIs", "JWT"],
+    Tools: ["Git", "Docker", "Figma", "VS Code", "Vercel", "Postman"],
+  },
 
-// GitHub contribution graph component
-function GitHubGraph() {
-  // Generate mock contribution data (replace with real GitHub API)
-  const weeks = 52;
-  const days = 7;
-  const levels = [0, 1, 2, 3, 4];
-  
-  const data = Array.from({ length: weeks }, (_, w) =>
-    Array.from({ length: days }, (_, d) => {
-      // Simulate realistic contribution pattern
-      const rand = Math.random();
-      if (rand < 0.35) return 0;
-      if (rand < 0.55) return 1;
-      if (rand < 0.75) return 2;
-      if (rand < 0.90) return 3;
-      return 4;
-    })
-  );
+  certifications: [
+    { name: "React Developer Certification", issuer: "Meta", year: "2023" },
+    { name: "Node.js Developer", issuer: "OpenJS Foundation", year: "2022" },
+    { name: "MongoDB Associate Developer", issuer: "MongoDB", year: "2022" },
+  ],
+};
 
-  const colors = [
-    "bg-neutral-800",
-    "bg-sky-900",
-    "bg-sky-700",
-    "bg-sky-500",
-    "bg-sky-400",
-  ];
+// ─── Editable field component ────────────────────────────
+function EditableField({
+  value,
+  onSave,
+  className = "",
+  multiline = false,
+}: {
+  value: string;
+  onSave: (val: string) => void;
+  className?: string;
+  multiline?: boolean;
+}) {
+  const [editing, setEditing] = useState(false);
+  const [temp, setTemp] = useState(value);
 
-  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const handleSave = () => {
+    onSave(temp);
+    setEditing(false);
+  };
+
+  if (editing) {
+    return (
+      <span className="inline-flex flex-col gap-1 w-full">
+        {multiline ? (
+          <textarea
+            autoFocus
+            value={temp}
+            onChange={(e) => setTemp(e.target.value)}
+            className={`bg-neutral-800 border border-sky-500/50 rounded-lg px-2 py-1 text-white resize-none outline-none w-full ${className}`}
+            rows={3}
+          />
+        ) : (
+          <input
+            autoFocus
+            value={temp}
+            onChange={(e) => setTemp(e.target.value)}
+            className={`bg-neutral-800 border border-sky-500/50 rounded-lg px-2 py-1 text-white outline-none w-full ${className}`}
+          />
+        )}
+        <span className="flex gap-2">
+          <button
+            onClick={handleSave}
+            className="text-xs px-3 py-1 bg-sky-500 text-black rounded-lg font-semibold hover:bg-sky-400 transition-colors"
+          >
+            Save
+          </button>
+          <button
+            onClick={() => {
+              setTemp(value);
+              setEditing(false);
+            }}
+            className="text-xs px-3 py-1 bg-neutral-700 text-white rounded-lg hover:bg-neutral-600 transition-colors"
+          >
+            Cancel
+          </button>
+        </span>
+      </span>
+    );
+  }
 
   return (
-    <motion.div
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true }}
-      className="mb-24"
+    <span
+      className={`group relative cursor-pointer ${className}`}
+      onClick={() => setEditing(false)}
+      title="Click to edit"
     >
-      <motion.div custom={0} variants={fadeUp} className="text-center mb-10">
-        <h2 className="text-3xl md:text-4xl font-bold">
-          GitHub{" "}
-          <span className="bg-gradient-to-r from-sky-400 to-violet-400 bg-clip-text text-transparent">
-            Activity
-          </span>
-        </h2>
-        <p className="text-neutral-500 mt-3 text-sm">My open source contributions</p>
-      </motion.div>
-
-      <motion.div
-        custom={1} variants={fadeUp}
-        className="bg-neutral-900/80 border border-white/[0.06] rounded-2xl p-6 md:p-8 hover:border-sky-500/20 transition-all duration-300"
-      >
-        {/* GitHub profile link */}
-        <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-neutral-800 border border-white/10 flex items-center justify-center text-lg">
-              🐙
-            </div>
-            <div>
-              <p className="font-semibold text-white text-sm">brijesh2301</p>
-              <p className="text-neutral-500 text-xs font-mono">GitHub Profile</p>
-            </div>
-          </div>
-          <a
-            href="https://github.com/brijesh2301"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/[0.04] border border-white/[0.08] text-neutral-300 hover:text-white hover:border-white/20 text-sm transition-all duration-200"
-          >
-            View Profile ↗
-          </a>
-        </div>
-
-        {/* Stats row */}
-        <div className="grid grid-cols-3 gap-4 mb-6">
-          {[
-            { label: "Contributions", value: "847" },
-            { label: "Repositories", value: "34" },
-            { label: "Pull Requests", value: "120" },
-          ].map((s) => (
-            <div key={s.label} className="text-center bg-neutral-800/50 rounded-xl py-3 px-2">
-              <p className="text-xl font-bold text-sky-400">{s.value}</p>
-              <p className="text-neutral-500 text-xs mt-0.5">{s.label}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* Contribution grid */}
-        <div className="overflow-x-auto">
-          <div className="min-w-[600px]">
-            {/* Month labels */}
-            <div className="flex gap-[3px] mb-1 pl-0">
-              {months.map((m, i) => (
-                <div
-                  key={m}
-                  className="text-neutral-600 text-[10px] font-mono"
-                  style={{ width: `${(weeks / 12) * 13}px` }}
-                >
-                  {m}
-                </div>
-              ))}
-            </div>
-
-            {/* Grid */}
-            <div className="flex gap-[3px]">
-              {data.map((week, wi) => (
-                <div key={wi} className="flex flex-col gap-[3px]">
-                  {week.map((level, di) => (
-                    <div
-                      key={di}
-                      title={`${level} contributions`}
-                      className={`w-[10px] h-[10px] rounded-sm ${colors[level]} transition-all duration-200 hover:scale-125 cursor-pointer`}
-                    />
-                  ))}
-                </div>
-              ))}
-            </div>
-
-            {/* Legend */}
-            <div className="flex items-center gap-2 mt-3 justify-end">
-              <span className="text-neutral-600 text-[10px] font-mono">Less</span>
-              {colors.map((c, i) => (
-                <div key={i} className={`w-[10px] h-[10px] rounded-sm ${c}`} />
-              ))}
-              <span className="text-neutral-600 text-[10px] font-mono">More</span>
-            </div>
-          </div>
-        </div>
-      </motion.div>
-    </motion.div>
+      {value}
+      <span className="ml-1 opacity-0 group-hover:opacity-100 text-sky-400 text-xs transition-opacity">
+        ✏️
+      </span>
+    </span>
   );
 }
 
-export default function ProjectsPage() {
-  const [activeCategory, setActiveCategory] = useState("All");
+export default function ResumePage() {
+  const [data, setData] = useState(resumeData);
+  const [editMode, setEditMode] = useState(false);
 
-  const filtered = projects.filter(
-    (p) => activeCategory === "All" || p.category === activeCategory
-  );
+  const update = (path: string, value: string) => {
+    setData((prev) => {
+      const next = JSON.parse(JSON.stringify(prev));
+      const keys = path.split(".");
+      let obj = next;
+      for (let i = 0; i < keys.length - 1; i++) {
+        obj = obj[keys[i]];
+      }
+      obj[keys[keys.length - 1]] = value;
+      return next;
+    });
+  };
 
-  const featured = filtered.filter((p) => p.featured);
-  const others = filtered.filter((p) => !p.featured);
+  const handlePrint = () => window.print();
 
   return (
     <main className="min-h-screen bg-[#080b10] text-white overflow-x-hidden">
-      {/* Background */}
+      {/* Background grid */}
       <div
-        className="fixed inset-0 pointer-events-none opacity-20"
+        className="fixed inset-0 pointer-events-none opacity-20 print:hidden"
         style={{
           backgroundImage:
             "linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)",
           backgroundSize: "40px 40px",
         }}
       />
-      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-violet-500/5 blur-[100px] rounded-full pointer-events-none" />
+      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[500px] h-[250px] bg-sky-500/5 blur-[80px] rounded-full pointer-events-none print:hidden" />
 
-      <div className="relative z-10 max-w-5xl mx-auto px-6 pt-32 pb-24">
-
-        {/* ── Hero ── */}
-        <motion.div initial="hidden" animate="show" className="mb-16 text-center">
-          <motion.div custom={0} variants={fadeUp} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-violet-500/20 bg-violet-500/5 mb-6">
-            <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse" />
-            <span className="font-mono text-violet-400 text-xs tracking-widest uppercase">My Work</span>
-          </motion.div>
-          <motion.h1 custom={1} variants={fadeUp} className="text-5xl md:text-7xl font-bold leading-tight mb-6">
-            Featured{" "}
-            <span className="bg-gradient-to-r from-sky-400 via-violet-400 to-pink-400 bg-clip-text text-transparent">
-              Projects
-            </span>
-          </motion.h1>
-          <motion.p custom={2} variants={fadeUp} className="max-w-xl mx-auto text-neutral-400 text-lg leading-relaxed">
-            Things I've built — from full-stack apps to open source tools. Each project is a story of problem-solving and learning.
-          </motion.p>
-        </motion.div>
-
-        {/* ── Filter tabs ── */}
+      <div className="relative z-10 max-w-4xl mx-auto px-4 pt-28 pb-16">
+        {/* ── Top action bar ── */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="flex flex-wrap justify-center gap-2 mb-16"
+          className="flex items-center justify-between mb-8 print:hidden"
         >
-          {categories.map((cat) => (
+          <div>
+            <h1 className="text-2xl font-bold">My Resume</h1>
+            <p className="text-neutral-500 text-sm mt-1">
+              {editMode
+                ? "✏️ Click any field to edit"
+                : "View & download your resume"}
+            </p>
+          </div>
+          <div className="flex gap-3">
             <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`px-5 py-2 rounded-full font-mono text-sm transition-all duration-200 border ${
-                activeCategory === cat
-                  ? "bg-sky-500 text-black border-sky-500 font-semibold"
-                  : "bg-white/[0.03] text-neutral-400 border-white/[0.08] hover:text-white hover:border-white/20"
+              onClick={() => setEditMode(!editMode)}
+              className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 border ${
+                editMode
+                  ? "bg-sky-500 text-black border-sky-500"
+                  : "bg-white/[0.04] border-white/10 text-neutral-300 hover:border-white/20 hover:text-white"
               }`}
             >
-              {cat}
+              {editMode ? "✅ Done Editing" : "✏️ Edit Resume"}
             </button>
-          ))}
+            <button
+              onClick={handlePrint}
+              className="px-5 py-2.5 rounded-xl text-sm font-semibold bg-white text-black hover:bg-neutral-200 transition-all duration-200 hover:shadow-[0_0_20px_rgba(255,255,255,0.15)]"
+            >
+              🖨️ Download / Print
+            </button>
+          </div>
         </motion.div>
 
-        {/* ── Featured Projects ── */}
-        {featured.length > 0 && (
-          <div className="space-y-6 mb-8">
-            {featured.map((project, i) => (
-              <motion.div
-                key={project.id}
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true }}
-                custom={i}
-                variants={fadeUp}
-                className={`relative group bg-neutral-900/80 border border-white/[0.06] rounded-2xl p-6 md:p-8 transition-all duration-300 overflow-hidden ${project.border}`}
-              >
-                {/* Gradient bg on hover */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-
-                <div className="relative grid md:grid-cols-3 gap-6 items-center">
-                  {/* Info */}
-                  <div className="md:col-span-2">
-                    <div className="flex flex-wrap items-center gap-2 mb-3">
-                      <span className={`font-mono text-xs px-3 py-1 rounded-full border ${project.badge}`}>
-                        {project.category}
-                      </span>
-                      <span className={`font-mono text-xs px-3 py-1 rounded-full border ${
-                        project.status === "Live"
-                          ? "bg-green-500/10 text-green-400 border-green-500/20"
-                          : "bg-yellow-500/10 text-yellow-400 border-yellow-500/20"
-                      }`}>
-                        {project.status === "Live" ? "🟢 Live" : "🟡 In Progress"}
-                      </span>
-                      <span className="font-mono text-xs px-3 py-1 rounded-full border bg-white/[0.04] text-neutral-500 border-white/[0.06]">
-                        ⭐ Featured
-                      </span>
-                    </div>
-
-                    <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-sky-100 transition-colors">
-                      {project.title}
-                    </h3>
-                    <p className="text-neutral-400 leading-relaxed mb-4 text-sm">
-                      {project.description}
-                    </p>
-
-                    {/* Tags */}
-                    <div className="flex flex-wrap gap-2 mb-5">
-                      {project.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="px-2.5 py-1 rounded-lg bg-white/[0.04] border border-white/[0.06] text-neutral-400 text-xs font-mono"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-
-                    {/* Links */}
-                    <div className="flex gap-3">
-                      <a
-                        href={project.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/[0.04] border border-white/[0.08] text-neutral-300 hover:text-white hover:border-white/20 text-sm font-mono transition-all duration-200"
-                      >
-                        🐙 GitHub
-                      </a>
-                      {project.live && (
-                        <a
-                          href={project.live}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={`flex items-center gap-2 px-4 py-2 rounded-xl border text-sm font-mono transition-all duration-200 ${project.accent} border-current bg-current/10 hover:bg-current/20`}
-                        >
-                          🔗 Live Demo
-                        </a>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Visual placeholder */}
-                  <div className={`h-40 md:h-48 rounded-xl bg-gradient-to-br ${project.gradient} border border-white/[0.06] flex items-center justify-center`}>
-                    <span className={`text-6xl font-bold opacity-20 ${project.accent}`}>
-                      {project.title[0]}
-                    </span>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+        {/* Edit mode banner */}
+        {editMode && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-6 px-4 py-3 rounded-xl bg-sky-500/10 border border-sky-500/20 text-sky-400 text-sm font-mono text-center print:hidden"
+          >
+            ✏️ Edit Mode ON — Click any text to edit it
+          </motion.div>
         )}
 
-        {/* ── Other Projects Grid ── */}
-        {others.length > 0 && (
-          <div className="mb-24">
-            <motion.h3
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              className="text-neutral-500 font-mono text-sm uppercase tracking-widest text-center mb-6"
-            >
-              Other Projects
-            </motion.h3>
-            <div className="grid md:grid-cols-2 gap-5">
-              {others.map((project, i) => (
-                <motion.div
-                  key={project.id}
-                  initial="hidden"
-                  whileInView="show"
-                  viewport={{ once: true }}
-                  custom={i}
-                  variants={fadeUp}
-                  className={`relative group bg-neutral-900/80 border border-white/[0.06] rounded-2xl p-6 transition-all duration-300 overflow-hidden ${project.border}`}
-                >
-                  <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-                  <div className="relative">
-                    <div className="flex items-start justify-between mb-3">
-                      <span className={`font-mono text-xs px-3 py-1 rounded-full border ${project.badge}`}>
-                        {project.category}
+        {/* ══════════════════════════════════════════════
+            RESUME CARD — This is what gets printed
+        ══════════════════════════════════════════════ */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="bg-neutral-900 border border-white/[0.08] rounded-3xl overflow-hidden shadow-2xl print:rounded-none print:border-none print:shadow-none print:bg-white print:text-black"
+        >
+          {/* ── Header ── */}
+          <div className="relative bg-gradient-to-br from-sky-500/10 via-neutral-900 to-violet-500/10 p-8 md:p-10 border-b border-white/[0.06]">
+            <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
+              {/* Name & title */}
+              <div>
+                <h2 className="text-4xl md:text-5xl font-bold text-white mb-2">
+                  {editMode ? (
+                    <EditableField
+                      value={data.name}
+                      onSave={(v) => update("name", v)}
+                      className="text-4xl font-bold"
+                    />
+                  ) : (
+                    data.name
+                  )}
+                </h2>
+                <p className="text-sky-400 text-xl font-semibold mb-4">
+                  {editMode ? (
+                    <EditableField
+                      value={data.title}
+                      onSave={(v) => update("title", v)}
+                    />
+                  ) : (
+                    data.title
+                  )}
+                </p>
+                <p className="text-neutral-400 text-sm leading-relaxed max-w-xl">
+                  {editMode ? (
+                    <EditableField
+                      value={data.summary}
+                      onSave={(v) => update("summary", v)}
+                      multiline
+                    />
+                  ) : (
+                    data.summary
+                  )}
+                </p>
+              </div>
+
+              {/* Contact info */}
+              <div className="flex flex-col gap-2 text-sm min-w-[200px]">
+                {[
+                  { icon: "📧", key: "email" },
+                  { icon: "📱", key: "phone" },
+                  { icon: "📍", key: "location" },
+                  { icon: "🐙", key: "github" },
+                  { icon: "💼", key: "linkedin" },
+                ].map(({ icon, key }) => (
+                  <div
+                    key={key}
+                    className="flex items-center gap-2 text-neutral-300"
+                  >
+                    <span>{icon}</span>
+                    {editMode ? (
+                      <EditableField
+                        value={(data as any)[key]}
+                        onSave={(v) => update(key, v)}
+                        className="text-sm"
+                      />
+                    ) : (
+                      <span className="font-mono text-xs">
+                        {(data as any)[key]}
                       </span>
-                      <span className={`font-mono text-xs px-2 py-1 rounded-full border ${
-                        project.status === "Live"
-                          ? "bg-green-500/10 text-green-400 border-green-500/20"
-                          : "bg-yellow-500/10 text-yellow-400 border-yellow-500/20"
-                      }`}>
-                        {project.status === "Live" ? "🟢" : "🟡"}
-                      </span>
-                    </div>
-                    <h3 className="text-lg font-bold text-white mb-2 group-hover:text-sky-100 transition-colors">
-                      {project.title}
-                    </h3>
-                    <p className="text-neutral-400 text-sm leading-relaxed mb-4">
-                      {project.description}
-                    </p>
-                    <div className="flex flex-wrap gap-1.5 mb-4">
-                      {project.tags.slice(0, 3).map((tag) => (
-                        <span key={tag} className="px-2 py-0.5 rounded-lg bg-white/[0.04] border border-white/[0.06] text-neutral-500 text-xs font-mono">
-                          {tag}
-                        </span>
-                      ))}
-                      {project.tags.length > 3 && (
-                        <span className="px-2 py-0.5 rounded-lg bg-white/[0.04] border border-white/[0.06] text-neutral-600 text-xs font-mono">
-                          +{project.tags.length - 3}
-                        </span>
-                      )}
-                    </div>
-                    <div className="flex gap-3">
-                      <a href={project.github} target="_blank" rel="noopener noreferrer"
-                        className="text-xs font-mono text-neutral-400 hover:text-white transition-colors flex items-center gap-1">
-                        🐙 GitHub ↗
-                      </a>
-                      {project.live && (
-                        <a href={project.live} target="_blank" rel="noopener noreferrer"
-                          className={`text-xs font-mono hover:opacity-80 transition-opacity flex items-center gap-1 ${project.accent}`}>
-                          🔗 Live ↗
-                        </a>
-                      )}
-                    </div>
+                    )}
                   </div>
-                </motion.div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
-        )}
 
-        {/* ── GitHub Contribution Graph ── */}
-        <GitHubGraph />
+          <div className="p-8 md:p-10 space-y-10">
+            {/* ── Experience ── */}
+            <section>
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-8 h-8 rounded-lg bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sm">
+                  💼
+                </div>
+                <h3 className="text-lg font-bold text-white uppercase tracking-widest font-mono">
+                  Experience
+                </h3>
+                <div className="flex-1 h-px bg-white/[0.06]" />
+              </div>
 
-        {/* ── Bottom CTA ── */}
-        <motion.div
-          initial="hidden" whileInView="show" viewport={{ once: true }}
-          className="text-center"
-        >
-          <motion.div
-            custom={0} variants={fadeUp}
-            className="inline-flex flex-col items-center gap-4 bg-neutral-900/80 border border-white/[0.06] rounded-3xl px-10 py-8"
-          >
-            <p className="text-neutral-400 text-sm">Want to see more of my work?</p>
-            <h3 className="text-2xl font-bold">Check out my GitHub</h3>
-            <a
-              href="https://github.com/brijesh2301"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-2 px-8 py-3 rounded-xl bg-white text-black font-semibold text-sm transition-all duration-200 hover:bg-neutral-200 hover:shadow-[0_0_25px_rgba(255,255,255,0.15)]"
-            >
-              🐙 Visit GitHub →
-            </a>
-          </motion.div>
+              <div className="space-y-6">
+                {data.experience.map((exp, i) => (
+                  <div
+                    key={exp.id}
+                    className="relative pl-5 border-l border-white/[0.06] hover:border-sky-500/30 transition-colors duration-300"
+                  >
+                    <div className="absolute -left-1.5 top-1.5 w-3 h-3 rounded-full bg-sky-500/40 border border-sky-500" />
+                    <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-1 mb-2">
+                      <div>
+                        <h4 className="font-bold text-white">
+                          {editMode ? (
+                            <EditableField
+                              value={exp.role}
+                              onSave={(v) => update(`experience.${i}.role`, v)}
+                            />
+                          ) : (
+                            exp.role
+                          )}
+                        </h4>
+                        <p className="text-sky-400 text-sm font-mono">
+                          {editMode ? (
+                            <EditableField
+                              value={exp.company}
+                              onSave={(v) =>
+                                update(`experience.${i}.company`, v)
+                              }
+                            />
+                          ) : (
+                            exp.company
+                          )}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-xs font-mono text-neutral-500 bg-neutral-800 px-3 py-1 rounded-full border border-white/[0.06]">
+                          {editMode ? (
+                            <EditableField
+                              value={exp.duration}
+                              onSave={(v) =>
+                                update(`experience.${i}.duration`, v)
+                              }
+                            />
+                          ) : (
+                            exp.duration
+                          )}
+                        </span>
+                        <p className="text-neutral-600 text-xs mt-1">
+                          {exp.location}
+                        </p>
+                      </div>
+                    </div>
+                    <ul className="space-y-1 mt-2">
+                      {exp.points.map((point, j) => (
+                        <li
+                          key={j}
+                          className="flex gap-2 text-sm text-neutral-400"
+                        >
+                          <span className="text-sky-500 mt-0.5 flex-shrink-0">
+                            ▸
+                          </span>
+                          {editMode ? (
+                            <EditableField
+                              value={point}
+                              onSave={(v) =>
+                                update(`experience.${i}.points.${j}`, v)
+                              }
+                              className="text-sm"
+                            />
+                          ) : (
+                            point
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* ── Education ── */}
+            <section>
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-8 h-8 rounded-lg bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-sm">
+                  🎓
+                </div>
+                <h3 className="text-lg font-bold text-white uppercase tracking-widest font-mono">
+                  Education
+                </h3>
+                <div className="flex-1 h-px bg-white/[0.06]" />
+              </div>
+
+              <div className="space-y-4">
+                {data.education.map((edu, i) => (
+                  <div
+                    key={edu.id}
+                    className="flex flex-col md:flex-row md:items-center md:justify-between bg-neutral-800/40 rounded-xl p-4 border border-white/[0.04] hover:border-violet-500/20 transition-colors duration-300"
+                  >
+                    <div>
+                      <h4 className="font-bold text-white">
+                        {editMode ? (
+                          <EditableField
+                            value={edu.degree}
+                            onSave={(v) => update(`education.${i}.degree`, v)}
+                          />
+                        ) : (
+                          edu.degree
+                        )}
+                      </h4>
+                      <p className="text-violet-400 text-sm font-mono">
+                        {editMode ? (
+                          <EditableField
+                            value={edu.institution}
+                            onSave={(v) =>
+                              update(`education.${i}.institution`, v)
+                            }
+                          />
+                        ) : (
+                          edu.institution
+                        )}
+                      </p>
+                    </div>
+                    <div className="text-right mt-2 md:mt-0">
+                      <span className="text-xs font-mono text-neutral-500 bg-neutral-800 px-3 py-1 rounded-full border border-white/[0.06]">
+                        {editMode ? (
+                          <EditableField
+                            value={edu.duration}
+                            onSave={(v) => update(`education.${i}.duration`, v)}
+                          />
+                        ) : (
+                          edu.duration
+                        )}
+                      </span>
+                      <p className="text-green-400 text-xs font-mono mt-1">
+                        {edu.grade}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* ── Skills ── */}
+            <section>
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-8 h-8 rounded-lg bg-green-500/10 border border-green-500/20 flex items-center justify-center text-sm">
+                  ⚡
+                </div>
+                <h3 className="text-lg font-bold text-white uppercase tracking-widest font-mono">
+                  Skills
+                </h3>
+                <div className="flex-1 h-px bg-white/[0.06]" />
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-4">
+                {Object.entries(data.skills).map(([cat, items]) => (
+                  <div
+                    key={cat}
+                    className="bg-neutral-800/40 rounded-xl p-4 border border-white/[0.04]"
+                  >
+                    <p className="text-xs font-mono text-neutral-500 uppercase tracking-widest mb-3">
+                      {cat}
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {items.map((skill, i) => (
+                        <span
+                          key={skill}
+                          className="px-2.5 py-1 rounded-lg bg-white/[0.04] border border-white/[0.06] text-neutral-300 text-xs font-mono hover:text-sky-400 hover:border-sky-500/30 transition-colors cursor-default"
+                        >
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* ── Certifications ── */}
+            <section>
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-8 h-8 rounded-lg bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-sm">
+                  🏆
+                </div>
+                <h3 className="text-lg font-bold text-white uppercase tracking-widest font-mono">
+                  Certifications
+                </h3>
+                <div className="flex-1 h-px bg-white/[0.06]" />
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-4">
+                {data.certifications.map((cert, i) => (
+                  <div
+                    key={i}
+                    className="bg-neutral-800/40 rounded-xl p-4 border border-white/[0.04] hover:border-orange-500/20 transition-colors duration-300"
+                  >
+                    <p className="font-semibold text-white text-sm mb-1">
+                      {editMode ? (
+                        <EditableField
+                          value={cert.name}
+                          onSave={(v) => update(`certifications.${i}.name`, v)}
+                        />
+                      ) : (
+                        cert.name
+                      )}
+                    </p>
+                    <p className="text-orange-400 text-xs font-mono">
+                      {cert.issuer}
+                    </p>
+                    <p className="text-neutral-600 text-xs mt-1">{cert.year}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
+          </div>
         </motion.div>
 
+        {/* ── Bottom note ── */}
+        <p className="text-center text-neutral-600 text-xs font-mono mt-6 print:hidden">
+          💡 Click "Edit Resume" to modify any field • Click "Download / Print"
+          to save as PDF
+        </p>
       </div>
+
+      {/* Print styles */}
+      <style jsx global>{`
+        @media print {
+          body {
+            background: white !important;
+            color: black !important;
+          }
+          .print\\:hidden {
+            display: none !important;
+          }
+          nav {
+            display: none !important;
+          }
+        }
+      `}</style>
     </main>
   );
 }
