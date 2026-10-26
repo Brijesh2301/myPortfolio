@@ -37,7 +37,7 @@ const projects = [
       "Production-ready Express.js REST API with JWT auth, rate limiting, input validation Real-time Role Based attendance tracking system with admin dashboard and user management, Task Management , and task status , features like Check in and checkout, etc.",
     tags: ["React.js", "TypeScript","Express.js", "Node.js"," MongoDB", "Tailwind", "JWT"],
     github: "https://github.com/brijesh2301/attendance-system",
-    live: "http://13.58.165.237:3000",
+    live: "https://attendence-system-olive.vercel.app",
     category: "Full Stack",
     status: "Live",
     featured: true,
