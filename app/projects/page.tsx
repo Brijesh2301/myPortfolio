@@ -21,7 +21,7 @@ const projects = [
       "Full-Stack Application with JWT user authentication,  Amazon AWS SES Email integration. Built with MERN stack.",
     tags: ["React", "Node.js", "MongoDB", "Express","JWT","Tailwind" ],
     github: "https://github.com/brijesh2301/devtinder",
-    live: "http://15.206.222.88/",
+    live: "https://div-tinder-web.vercel.app/",
     category: "Full Stack",
     status: "Live",
     featured: true,
